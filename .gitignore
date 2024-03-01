@@ -1,23 +1,10 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
+# Ignore everything in the "mirrorMe" directory, except the "wp-content" directory.
+/mirrorMe/*
+!/mirrorMe/wp-content/
 
-# testing
-/coverage
-
-# production
-/build
-
-# misc
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# Ignore everything in the "wp-content" directory, except the "plugins"
+# and "themes" directories.
+/mirrorMe/wp-content/*
+!/mirrorMe/wp-content/plugins/
+!/mirrorMe/wp-content/themes/
