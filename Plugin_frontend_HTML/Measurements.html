@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+	  <!--view-source:https://www.w3schools.com/-->
+      <meta name="description" content="Measurement Page">
+      <meta name="keywords" content="Measurements">
+      <meta name="author" content="Amaya De Silva">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	  <link rel="stylesheet" href="button.css">
+      <title>MirrorMe</title>
+	  <link rel="icon" type="image/x.icon" href="images/mirrorme-high-resolution-logo.png" >
+      <style>
+        /* Style container element */
+        .container {
+            text-align: center;
+        }
+        </style>
+    </head>
+
+    <body>
+        <h2 class="container">Automated Body Measurements</h2>
+        <form onsubmit="return validateHeight()" action="/submit-form" method="post">
+            <!-- Radio buttons for single selection -->
+            <br>
+            <label>Add your gender</label><br>
+            <label><input type="radio" name="selection" value="male"> Male</label><br>
+            <label><input type="radio" name="selection" value="female"> Female</label><br>
+            <br>
+
+            <label for="text-input">Enter your height in cm:</label><br>
+            <input type="text" id="height" name="height"><br>
+            
+
+            <br><br><br>
+            <!-- File upload field -->
+            <label for="file-input">Upload your image:</label><br>
+            <input type="file" id="file-input" name="image"><br>
+            <br><br><br>
+            <!-- Submit button -->
+            <input type="submit" value="Submit">
+        </form>
+
+
+       <script>
+            function validateHeight() {
+                var height = document.getElementById("height").value;
+            
+                // Regular expression to match a float number
+                var floatPattern = /^-?\d+(\.\d+)?$/;
+                // Check if the input matches the float pattern
+                if (floatPattern.test(height)) {
+                    alert("Number is a float: " + height);
+                    return true; // Form submission allowed
+                } else {
+                    alert("Number is not a float!");
+                    return false; // Prevent form submission
+                }
+            }
+            </script>-->
+
+            <!--<script>
+                function validateHeight() {
+                    var height = document.getElementById("height").value;
+                
+                    // Check if the input is a valid integer
+                    if (Number.isInteger(parseInt(height))) {
+                        alert("Height is an integer: " + height);
+                        return true; // Form submission allowed
+                    } else {
+                        alert("Height is not an integer!");
+                        return false; // Prevent form submission
+                    }
+                }
+                </script>-->
+    </body>
