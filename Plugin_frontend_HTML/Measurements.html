@@ -1,76 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="UTF-8">
-	  <!--view-source:https://www.w3schools.com/-->
-      <meta name="description" content="Measurement Page">
-      <meta name="keywords" content="Measurements">
-      <meta name="author" content="Amaya De Silva">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	  <link rel="stylesheet" href="button.css">
-      <title>MirrorMe</title>
-	  <link rel="icon" type="image/x.icon" href="images/mirrorme-high-resolution-logo.png" >
-      <style>
-        /* Style container element */
-        .container {
-            text-align: center;
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Measurement Page">
+    <meta name="keywords" content="Measurements">
+    <meta name="author" content="Amaya De Silva">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="button.css">
+    <title>MirrorMe</title>
+    <link rel="icon" type="image/x.icon" href="images/mirrorme-high-resolution-logo.png">
+    <style>
+       body{
+            margin: 0;
+            padding: 0;
+            background-image: url(images/Background.jpg);
+            background-size: cover; /* Cover the entire viewport */
+            background-position: center; /* Center the image */
+            background-repeat: no-repeat; /* Do not repeat the image */
+            height: 100vh;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
         }
-        </style>
-    </head>
+        label{
+            float:left;
+            width:50%;
+            margin-right:0;
+            padding-top:0.2em;
+            text-align:left;
+            font-weight:bold;
+        }
 
-    <body>
-        <h2 class="container">Automated Body Measurements</h2>
-        <form onsubmit="return validateHeight()" action="/submit-form" method="post">
+        fieldset{
+            width: 600px; /* Adjust the width as needed */
+            height: 200px; /* Adjust the height as needed */
+            margin: 0 auto; /* Center the fieldset horizontally */
+            padding: 0 5%;
+            font:80%/1 verdana;
+        }
+        /* Style for loading animation */
+        .loading {
+            display: none;
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loading-container {
+            display: flex;
+            justify-content: center; /* Horizontal centering */
+            align-items: center; /* Vertical centering */
+            /*height: 100vh; /* Match the height of the viewport */
+        }
+    </style>
+</head>
+<body>
+    <h2 style="text-align: center;" >Automated Body Measurements</h2>
+    <form onsubmit="return submitForm(event) && validateHeight()" action="/run_inference" method="post">
+        
+        <fieldset>
             <!-- Radio buttons for single selection -->
-            <br>
-            <label>Add your gender</label><br>
-            <label><input type="radio" name="selection" value="male"> Male</label><br>
-            <label><input type="radio" name="selection" value="female"> Female</label><br>
+            <p style="font-weight:bold" >Add Your Gender:</p>
+            <label for="male">Male</label>
+	        <input type="radio" id="male" name="selection" value="male" required>
             <br>
 
-            <label for="text-input">Enter your height in cm:</label><br>
-            <input type="text" id="height" name="height"><br>
-            
+	        <label for="female">Female</label>
+	        <input type="radio" id="female" name="selection" value="female" required>
+            <br><br>
 
-            <br><br><br>
+            <label for="text-input">Enter your height in cm:</label>
+            <input type="text" id="height" name="height" placeholder = "cm" required>
+            <br><br>
+
             <!-- File upload field -->
-            <label for="file-input">Upload your image:</label><br>
-            <input type="file" id="file-input" name="image"><br>
-            <br><br><br>
-            <!-- Submit button -->
-            <input type="submit" value="Submit">
-        </form>
+           <label for="file-input">Upload your image:</label>
+           <input type="file" id="file" name="file" required>
+           <br><br>
 
+           <!-- Submit button -->
+          <input type="submit" value="Next" style="background-color: #0000; border-radius: 5px; padding: 5px 30px;">
+        </fieldset>
+    </form>
 
-       <script>
-            function validateHeight() {
-                var height = document.getElementById("height").value;
+    <br><br>
+    <!-- Loading animation -->
+    <div class="loading-container">
+        <div id="loading" class="loading"></div>
+    </div>
+
+    <div id="additionalElements" style="display: none;">
+        <!-- Your additional HTML elements go here -->
+    </div>
+
+    
+    <!-- Output section -->
+    <div id="output"></div>
+    
+    <script>
+        function submitForm(event) {
+            // Prevent the default form submission
+            event.preventDefault();
+
+            // Show loading animation
+            document.getElementById("loading").style.display = "block";
             
-                // Regular expression to match a float number
-                var floatPattern = /^-?\d+(\.\d+)?$/;
-                // Check if the input matches the float pattern
-                if (floatPattern.test(height)) {
-                    alert("Number is a float: " + height);
-                    return true; // Form submission allowed
+            // Get the form data
+            var form = event.target;
+            var formData = new FormData(form);
+            
+            // Make an HTTP POST request to the server
+            return fetch('http://127.0.0.1:5000/run_inference', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                // Hide loading animation
+                document.getElementById("loading").style.display = "none";
+                if (response.ok) {
+                    return response.json(); // Parse response JSON
                 } else {
-                    alert("Number is not a float!");
-                    return false; // Prevent form submission
+                    throw new Error('Failed to submit Data. Submit Again');
                 }
+            })
+            .then(data => {
+                // Display output on the page
+                document.getElementById("output").innerHTML = "<pre>" + JSON.stringify(data, null, 2) + "</pre>";
+            })
+            .catch(error => {
+                alert(error.message);
+                return false;
+            });
+        }
+        
+        function validateHeight() {
+            var height = document.getElementById("height").value;
+            
+            // Regular expression to match a float number
+            var floatPattern = /^-?\d+(\.\d+)?$/;
+            // Check if the input matches the float pattern
+            if (floatPattern.test(height)) {
+                return true; // Form submission allowed
+            } else {
+                alert("Ender a valid Value");
+                return false; // Prevent form submission
             }
-            </script>-->
-
-            <!--<script>
-                function validateHeight() {
-                    var height = document.getElementById("height").value;
-                
-                    // Check if the input is a valid integer
-                    if (Number.isInteger(parseInt(height))) {
-                        alert("Height is an integer: " + height);
-                        return true; // Form submission allowed
-                    } else {
-                        alert("Height is not an integer!");
-                        return false; // Prevent form submission
-                    }
-                }
-                </script>-->
-    </body>
+        }
+    </script>
+</body>
+</html>
