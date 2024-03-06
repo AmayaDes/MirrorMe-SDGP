@@ -68,7 +68,7 @@ add_action( 'woocommerce_single_product_summary', 'add_custom_button_to_product_
 
 function add_custom_button_to_product_page(){
     // Output your custom button HTML with a link
-    echo '<a href="https://example.com/destination-page" class="custom-button" target="_blank">Try-On</a>';
+    echo '<a href="https://amayades.github.io/Html/" class="custom-button" target="_blank">Try-On</a>';
     
     // You can style the button using CSS
     ?>
