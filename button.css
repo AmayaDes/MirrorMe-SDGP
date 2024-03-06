@@ -1,6 +1,6 @@
 .btn {
     position: absolute;
-    bottom:0; /* Adjust bottom distance as needed */
+    bottom:20px; /* Adjust bottom distance as needed */
     right: 20px; /* Adjust right distance as needed */
     padding: 10px 30px;
     background-color: #322727;
