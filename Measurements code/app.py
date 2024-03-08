@@ -20,7 +20,7 @@ def run_inference():
     try:
         # Check if the POST request contains the 'file' key
         if 'file' not in request.files or 'selection' not in request.form:
-            return jsonify({'error': 'Missing file or gender parameter in the request!'}), 400
+            return jsonify({'error': 'Missing file or gender parameter in the request'}), 400
         
         file = request.files['file']
 
