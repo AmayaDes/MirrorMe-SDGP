@@ -8,3 +8,4 @@
 /mirrorMe/wp-content/*
 !/mirrorMe/wp-content/plugins/
 !/mirrorMe/wp-content/themes/
+node_modules
