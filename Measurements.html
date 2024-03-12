@@ -16,7 +16,7 @@
             background-image: url(images/Background.jpg);
             background-size: cover; /* Cover the entire viewport */
             background-position: center; /* Center the image */
-            background-repeat: no-repeat; /* Do not repeat the image */
+            background-repeat: repeat-y;
             height: 100vh;
             height: 100vh;
             justify-content: center;
@@ -32,10 +32,10 @@
         }
 
         fieldset{
+            border-radius: 5px;;
             width: 600px; /* Adjust the width as needed */
             height: 200px; /* Adjust the height as needed */
             margin: 0 auto; /* Center the fieldset horizontally */
-            padding: 0 5%;
             font:80%/1 verdana;
         }
         /* Style for loading animation */
@@ -59,13 +59,30 @@
             align-items: center; /* Vertical centering */
             /*height: 100vh; /* Match the height of the viewport */
         }
+        #output {
+            font-family: Verdana;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%; /* Ensure the div takes up the full height of the fieldset */
+            /*width:50%;
+            margin-right:0;*/
+            padding-top:0.2em;
+            font-weight:bold;
+        }
+        video {
+            display: block;
+            margin: 0 0;
+        }
+
+        
     </style>
 </head>
 <body>
     <h2 style="text-align: center;" >Automated Body Measurements</h2>
     <form onsubmit="return submitForm(event) && validateHeight()" action="/run_inference" method="post">
         
-        <fieldset>
+        <fieldset style="height:fit-content;">
             <!-- Radio buttons for single selection -->
             <p style="font-weight:bold" >Add Your Gender:</p>
             <label for="male">Male</label>
@@ -78,15 +95,19 @@
 
             <label for="text-input">Enter your height in cm:</label>
             <input type="text" id="height" name="height" placeholder = "cm" required>
-            <br><br>
+            <br>
 
-            <!-- File upload field -->
-           <label for="file-input">Upload your image:</label>
-           <input type="file" id="file" name="file" required>
+            <!-- File upload field 
+           <label id="uploadImageButton" for="file-input">Upload your image:</label>
+           <input type="file" id="file" name="file" required>-->
            <br><br>
 
+           <button type="button" onclick="captureImage()" style="margin: 0 auto; display: block; background-color: #0000; border-radius: 5px; padding: 5px 30px;">Take a Photo</button>
+
+           <br><br><br><br>
            <!-- Submit button -->
-          <input type="submit" value="Next" style="background-color: #0000; border-radius: 5px; padding: 5px 30px;">
+          <input id="nextButton" type="submit" value="Next" style="margin: 0 auto; display:none;;background-color: #0000; border-radius: 5px; padding: 5px 30px;">
+          <br><br><br>
         </fieldset>
     </form>
 
@@ -102,12 +123,147 @@
 
     
     <!-- Output section -->
-    <div id="output"></div>
-    
+    <fieldset id="jsonResponse" style="display: none; height:fit-content">
+        <div id="output" ></div>
+    </fieldset>
+
+
     <script>
+        /*function startCamera() {
+            // Create a video element to display the camera stream
+            var video = document.createElement('video');
+            // Set the video element attributes
+            video.setAttribute('autoplay', '');
+            video.setAttribute('playsinline', '');
+            // Set the video stream as the source for the video element
+            navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function (stream) {
+                video.srcObject = stream;
+                // Select the fieldset element
+                var fieldset = document.querySelector('fieldset');
+                // Append the video element to the fieldset
+                fieldset.appendChild(video);
+             })
+             .catch(function (error) {
+                console.error('Error accessing the camera:', error);
+            });
+        }
+
+    // Call the startCamera() function when the page loads
+    window.onload = function() {
+    startCamera();
+    };*/
+
+        function captureImage() {
+            var fieldset = document.querySelector('fieldset');
+            var capturedImage = fieldset.querySelector('img');
+            if (capturedImage) {
+                // If a captured image is found, remove it
+                fieldset.removeChild(capturedImage);
+            }
+           // Access the user's camera
+           navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function (stream) {
+                // Create a video element to display the camera stream
+                var video = document.createElement('video');
+                // Set the video stream as the source for the video element
+                video.srcObject = stream;
+                // Play the video stream
+                video.play();
+                // Select the fieldset element
+                var fieldset = document.querySelector('fieldset');
+                // Append the video element to the fieldset
+                fieldset.insertBefore(video, fieldset.children[16]);
+
+                // Create a countdown element to display the countdown
+                var countdownElement = document.createElement('div');
+                countdownElement.style.position = 'absolute';
+                countdownElement.style.color = 'white';
+                countdownElement.style.fontSize = '60px';
+                document.body.appendChild(countdownElement);
+
+                // Position the countdown element over the video element
+                var videoRect = video.getBoundingClientRect();
+                var videoWidth = video.offsetWidth; 
+                var videoHeight = video.offsetHeight;
+                var countdownWidth = countdownElement.offsetWidth;
+                var countdownHeight = countdownElement.offsetHeight;
+                var countdownTop = videoRect.top + (videoHeight - countdownHeight) / 2;
+                var countdownLeft = videoRect.left + (videoWidth - countdownWidth) / 2;
+                countdownElement.style.top = countdownTop + 100 +  'px';
+                countdownElement.style.left = countdownLeft + 100 + 'px';
+                
+
+                var countdown = 15;
+                var countdownInterval = setInterval(function () {
+                    countdownElement.textContent = countdown.toString();
+                    countdown--;
+                    if (countdown < 0) {
+                        clearInterval(countdownInterval);
+                        countdownElement.textContent = '';
+                    }
+                }, 1000);
+
+                // After 15 seconds, capture an image
+                setTimeout(function () {
+                    // Create a canvas element to draw the image
+                    var canvas = document.createElement('canvas');
+                    // Set the canvas size to match the video stream dimensions
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    // Draw the video frame on the canvas
+                    var context = canvas.getContext('2d');
+                    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    // Convert the canvas content to a data URL representing a PNG image
+                    var dataURL = canvas.toDataURL('image/jpeg');
+                    // Convert the data URL to a Blob object representing the image
+                    var blob = dataURLtoBlob(dataURL);
+
+                    // Create a file object from the Blob
+                    var file = new File([blob], 'captured_image.jpg', { type: 'image/jpeg' });
+
+                    fieldset.removeChild(video);
+
+                    var capturedImage = document.createElement('img');
+                    capturedImage.src = dataURL;
+                    capturedImage.style.width = '100%'; // Adjust image width if needed
+                    // Append the captured image to the fieldset
+                    fieldset.insertBefore(capturedImage, fieldset.children[16]);
+
+                    document.getElementById('nextButton').style.display = 'block';
+
+                    // Stop the video stream
+                    stream.getVideoTracks()[0].stop();
+                }, 15000); // Capture image after 15 seconds
+            })
+            .catch(function (error) {
+                console.error('Error accessing the camera:', error);
+            });
+    }
+
+    // Function to convert data URL to Blob
+    function dataURLtoBlob(dataURL) {
+        var parts = dataURL.split(';base64,');
+        var contentType = parts[0].split(':')[1];
+        var byteCharacters = atob(parts[1]);
+        var byteNumbers = new Array(byteCharacters.length);
+        for (var i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        var byteArray = new Uint8Array(byteNumbers);
+        return new Blob([byteArray], { type: contentType });
+    }
         function submitForm(event) {
             // Prevent the default form submission
             event.preventDefault();
+
+            var fieldset = document.querySelector('fieldset');
+            var capturedImage = fieldset.querySelector('img');
+            if (capturedImage) {
+                // If a captured image is found, remove it
+                fieldset.removeChild(capturedImage);
+            }
+
 
             // Show loading animation
             document.getElementById("loading").style.display = "block";
@@ -115,6 +271,14 @@
             // Get the form data
             var form = event.target;
             var formData = new FormData(form);
+            var capturedImageDataUrl = capturedImage.src;
+            if (capturedImageDataUrl) {
+                // Convert the data URL to a Blob object representing the image
+                var blob = dataURLtoBlob(capturedImageDataUrl);
+                // Append the captured image Blob to the form data
+                formData.append('file', blob, 'captured_image.jpg');
+            }
+            
             
             // Make an HTTP POST request to the server
             return fetch('http://127.0.0.1:5000/run_inference', {
@@ -131,8 +295,28 @@
                 }
             })
             .then(data => {
+                if ("output" in data) {
+                // Split the value of the "output" property by newline characters ("\n")
+                var measurements = data.output.split('\n');
+        
+                // Initialize an empty string to store the HTML content
+                var htmlContent = '';
+         
+               // Iterate through the measurements array
+               measurements.forEach(function(measurement) {
+               // Append each measurement to the HTML content with a new line
+               htmlContent += measurement + "<br><br>";
+               });
+
                 // Display output on the page
-                document.getElementById("output").innerHTML = "<pre>" + JSON.stringify(data, null, 2) + "</pre>";
+                document.getElementById("output").innerHTML = htmlContent;
+            }
+
+                 // Hide fieldset element
+                document.querySelector('fieldset').style.display = 'none';
+
+                // Display the new fieldset for JSON response
+               document.getElementById("jsonResponse").style.display = "block";
             })
             .catch(error => {
                 alert(error.message);
