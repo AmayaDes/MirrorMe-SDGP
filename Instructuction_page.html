@@ -12,10 +12,33 @@
 	  <link rel="icon" type="image/x.icon" href="images/mirrorme-high-resolution-logo.png" >
 
       <style>
+        body {
+            background-image: url(images/bg8.jpg);
+            background-size: cover; 
+            background-repeat: no-repeat;
+            background-attachment: fixed; 
+            background-position: center center;
+        }
         /* Style container element */
         .container {
             text-align: center;
         }
+        .image-container {
+            perspective: 800px;
+        }
+        .image{
+            margin-left: 150px;
+            margin-top: -500px;
+            transform: rotateY(0deg) translateZ(100px);
+            transition: transform 3s ease;
+            
+            
+           
+        }
+        .image:hover {
+            transform: rotateY(360deg) translateZ(0px);
+        }
+        
 
         /* Style list items */
         ul {
@@ -23,25 +46,94 @@
             text-align: left; /* Align list items to the left within the container */
             padding-left: 0; /* Remove default left padding of the list */
         }
+        .div1,
+        .div2 {
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+        }
+
+        .div1:hover,
+        .div2:hover {
+            transform: scale(1.1);
+            /* Adjust the scale factor as needed */
+            opacity: 1;
+        }
+        .div1 {
+            width: 600px;
+            height: 100px;
+            border: 2px solid black;
+            margin-left: 500px;
+            text-align: center;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            background-color:chocolate;
+            opacity: 0.9;
+            border-radius: 5px;
+            
+            
+        }
+        .div2 {
+            width: 600px;
+            height: 100px;
+            border: 2px solid black;
+            margin-left: 500px;
+            text-align: center;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            background-color:aliceblue;
+            opacity: 0.9;
+            border-radius: 5px;
+            
+        }
+        .image-container-div {
+            margin-right: 50px;
+        }
+
     </style>
    </head>
 
-   <body style="background-color:rgb(225, 249, 173) ;">
-    <h2 style="text-align: center;">
+   <body style="background-image: url(images/bg8.jpg);">
+    <h1 style="text-align: center;">
         Intructions to follow for automated body Measurements
-    </h2> 
-    <div class = "container">
-        <ul>
-            <li>Tie your hair and wear a fitting clothes</li>
-            <li>Use a White background</li>
-            <li>Pose for the photo as shown in below image </li>
-            <li>Upload a clear photo for accurate measurements</li>
-            <li>You will be asked for permissoion to use your webcam to vitrual try-on experience</li>
-        </ul>
-    </div>
-        <div class="container"> 
+    </h1> 
+    <br>
+    <div class="div1" >
+        <div class="image-container-div">
+           
+            <img src="images/tie.jpg" alt="Image description" style="width: 80px; height: 80px;margin-left: 20px;">
+        </div>
+        <br>Tie your hair and wear a fitting clothes</div>
+    <br>
+    <div class="div2">
+        <div class="image-container-div">
+           
+            <img src="images/white.jpg" alt="Image description" style="width: 80px; height: 80px;margin-left: 20px;">
+        </div><br>Use a white background</div>
+    <br>
+    <div class="div1">
+        <div class="image-container-div">
+           
+            <img src="images/front.jpg" alt="Image description" style="width: 80px; height: 80px;margin-left: 20px;">
+        </div><br>Pose for the photo as shown in below image </div>
+    <br>
+    <div class="div2">
+        <div class="image-container-div">
+           
+            <img src="images/OIP (1).jpeg" alt="Image description" style="width: 80px; height: 80px;margin-left: 20px;">
+        </div><br>Upload a clear photo for accurate measurements</div>
+    <br>
+    <div class="div1">
+        <div class="image-container-div">
+           
+            <img src="images/tik.jpg" alt="Image description" style="width: 80px; height: 80px;margin-left: 20px;">
+        </div><br>You will be asked for permissoion to use your webcam to vitrual try-on experience</div>
+    <br>
 
-            <img src="images/Person.png" height="490" alt="Image with open arms ">
+        
+        <div class="image-container"> 
+
+            <img class="image" src="images/Person.png" height="490" alt="Image with open arms ">
         </div>
 
         <a href="Measurements.html" class="btn-link">
