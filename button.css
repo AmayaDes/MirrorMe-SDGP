@@ -9,6 +9,17 @@
     border-radius: 5px;
     cursor: pointer;
 }
+.btn_left {
+    position: absolute;
+    bottom:20px; /* Adjust bottom distance as needed */
+    left: 20px; /* Adjust right distance as needed */
+    padding: 10px 30px;
+    background-color: #322727;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
 .btn-link {
     text-decoration: none; /* Remove underline */
     color: inherit; /* Inherit text color from parent */
