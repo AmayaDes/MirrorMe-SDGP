@@ -9,6 +9,7 @@
           crossorigin="anonymous" referrerpolicy="no-referrer">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="style.css">
+<link rel="stylesheet" href="footer.css">
 </head>
 <body>
         <div class="heading">
@@ -51,6 +52,9 @@
             <form action="mailto:jayani.20221756@iit.ac.lk" method="post" enctype="text/plain">
                 <label for="first_name">First Name</label>
                 <input type="text" id="first_name" name="first_name" required>
+				
+                <label for="last_name">Last Name</label>
+                <input type="text" id="last_name" name="last_name">
     
                 <label for="country">Select Country*</label>
                 <select id="country" name="country" required>
@@ -67,9 +71,6 @@
                 <label for="message">Enter your message here*</label>
                 <textarea id="message" name="message" rows="4" required></textarea>
     
-                <label for="last_name">Last Name</label>
-                <input type="text" id="last_name" name="last_name">
-    
                 <label for="company_name">Company Name*</label>
                 <input type="text" id="company_name" name="company_name" required>
     
@@ -84,5 +85,41 @@
      </td>
 </tr>   
 </table>
+<br><br>
+        <!--create footer-->
+    <footer>
+        <div  class="footerContainer">
+
+            <h1 class="follow">Follow us:</h1><br><br>
+
+            <div class="socialIcons"><!--Social media icon-->
+                <a href=""><i class="fa-brands fa-facebook"></i></a>
+                <a href=""><i class="fa-brands fa-instagram"></i></a>
+                <a href=""><i class="fa-brands fa-twitter"></i></a>
+                <a href=""><i class="fa-brands fa-google-plus"></i></a>
+                <a href=""><i class="fa-brands fa-youtube"></i></a>
+            </div>
+
+            <div class="footerNav"> 
+                <ul>
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="footerBottom"> 
+            <p>
+                Copyright &copy;2024; Designed by <br><br>
+                <span>
+                    AMAYA, JAYANI, PABANI, KALANA, ZEINAB
+                </span>
+            </p>
+        </div>
+
+    </footer>
 </body>
 </html>
