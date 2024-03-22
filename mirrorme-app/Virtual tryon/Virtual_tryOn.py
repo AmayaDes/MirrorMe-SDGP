@@ -32,11 +32,10 @@ while True:
         lmOther= lmList[0],[1],[2],[3],[4],[5],[6],[7],[8],[9],[10]
         imgShirt = cv2.imread(os.path.join(shirtfolderPath, listShirts[imageNumber]), cv2.IMREAD_UNCHANGED)
         widthOfShirt = int((lm11[0] - lm12[0]) * fixedRatio)
-        print(widthOfShirt)
         imgShirt = cv2.resize(imgShirt, (widthOfShirt, int(widthOfShirt * shirtRatioHeightWidth)))
         currentScale = (lm11[0] - lm12[0]) / 190
         offset = int(44 * currentScale), int(48 * currentScale)
-
+        print(widthOfShirt)
         try:
             img = cvzone.overlayPNG(img, imgShirt, (lm12[0] - offset[0], lm12[1] - offset[1]))
         except:
