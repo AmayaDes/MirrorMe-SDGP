@@ -1,11 +1,11 @@
 
 
-import imutils
+
 import numpy as np
 import cv2
 import time
 import os
-
+import FaceDepthMeasurement
 
 
 proto = "MobileNetSSD_deploy.prototxt.txt"
@@ -18,13 +18,20 @@ CLASSES = ["background", "aeroplane", "bicycle", "bird", "boat",
 
 COLORS = (0,255,0)
 
-confidence_threshold = 0.2
+confidence_threshold = 0.5
+
+d= FaceDepthMeasurement.d
+focal = FaceDepthMeasurement.f
+
 
 # load our serialized model from disk
 print("[INFO] loading model...")
 net = cv2.dnn.readNetFromCaffe(proto,mobile_ssd)
 
 cap = cv2.VideoCapture(0)
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1270)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 780)
+
 
 while cap.isOpened():
 
@@ -63,6 +70,10 @@ while cap.isOpened():
         # Calculate stable height
         stable_height = lowest_point - highest_point
 
+        height = (stable_height* d)/focal
+
+        print("height",height)
+
         # Display the stable height on the frame
         height_label = f"Stable Height: {stable_height} pixels"
         cv2.putText(frame, height_label, (x1, y1 - 15), cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS, 2)
@@ -74,8 +85,10 @@ while cap.isOpened():
 
     toc = time.time()
     durr = float(toc-tic)
+
     fps = 1.0 / durr
-    cv2.putText(frame, "fps:%.3f" % fps, (20, 20), 3, 1.0, (0, 0, 255), 2, cv2.LINE_AA)
+    # cv2.putText(frame, "fps:%.3f" % fps, (20, 20), 3, 1.0, (0, 0, 255), 2, cv2.LINE_AA)
+    cv2.putText(frame, "height" % height, (20, 20), 3, 1.0, (0, 0, 255), 2, cv2.LINE_AA)
     cv2.imshow("Frame", frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break

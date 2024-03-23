@@ -50,6 +50,14 @@ with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=
                                  mp_drawing.DrawingSpec(color=(245,117,66), thickness=2, circle_radius=4),
                                  mp_drawing.DrawingSpec(color=(245,66,230), thickness=2, circle_radius=2)
                                  )
+        if results.pose_landmarks:
+            for landmark_id, landmark in enumerate(results.pose_landmarks.landmark):
+                landmark_x = landmark.x
+                landmark_y = landmark.y
+                print(f"Landmark {landmark_id}: ({landmark_x}, {landmark_y})")
+        else:
+            print("No pose landmarks detected.")
+
 
         cv2.imshow('Realtime body measurements', image)
 
