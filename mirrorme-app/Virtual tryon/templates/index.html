@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Video Stream</title>
+</head>
+<style>
+    body{
+        background-image: url('../Images/bg8.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-color: pink;
+    }
+h1{
+    margin-left: 700px;
+    color: blue;
+    font-size: 50px;
+    font-family: fantasy;
+}
+#Cam {
+    margin-left: 350px;
+}
+</style>
+<body>
+    <h1>Virtual Try On</h1>
+    <div id="Cam">
+        <img id="video" width="1080" height="720">
+    </div>
+
+</body>
+<script>
+    var video = document.getElementById('video');
+    video.src = "{{ url_for('video') }}";
+    video.play();
+</script>
+
+</html>
