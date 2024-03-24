@@ -2,7 +2,8 @@ from flask import Flask, render_template, Response
 import cv2
 import Virtual_tryOn
 
-app = Flask(__name__, template_folder="templates")z\
+app = Flask(__name__, template_folder="templates")
+
 
 def generate_frames():
     cap = cv2.VideoCapture(0)
