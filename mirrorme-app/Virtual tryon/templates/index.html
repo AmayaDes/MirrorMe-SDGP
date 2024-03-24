@@ -6,24 +6,46 @@
     <title>Live Video Stream</title>
 </head>
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Niconne&display=swap');
     body{
-        background-image: url('../Images/bg8.jpg');
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        background-color: pink;
+        background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+        background-size: 400% 400%;
+        animation: gradient 15s ease infinite;
+        height: 100vh;
+        }
+    @keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+        }
+    50% {
+        background-position: 100% 50%;
+        }
+    100% {
+        background-position: 0% 50%;
+        }
     }
-h1{
-    margin-left: 700px;
-    color: blue;
-    font-size: 50px;
-    font-family: fantasy;
-}
-#Cam {
-    margin-left: 350px;
-}
+    h1{
+        font-weight: 600;
+        font-family: 'Niconne', cursive;
+        color: #e0d6e9;
+        text-shadow: 2px 2px 0px  #957dad,
+                   4px 4px 0px #ee4b2b,
+                   6px 6px 0px #00c2cb,
+                   8px 8px 0px #ff7f50,
+                   10px 10px 0px #553c9a;
+        font-size: 70px;
+
+        background-clip: text;
+        margin-left: 700px;
+        background-image: conic-gradient(#553c9a 30%, #ee4b2b 40%, #ee4b2b 70%, #00c2cb 80%, #553c9a);;
+        -webkit-background-clip: text;
+    }
+    #Cam {
+        margin-left: 350px;
+    }
 </style>
 <body>
+
     <h1>Virtual Try On</h1>
     <div id="Cam">
         <img id="video" width="1080" height="720">
