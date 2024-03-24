@@ -1,16 +1,3 @@
-"""
-Defines networks.
-
-@Encoder_resnet
-@Encoder_resnet_v1_101
-@Encoder_fc3_dropout
-
-@Discriminator_separable_rotations
-
-Helper:
-@get_encoder_fn_separate
-"""
-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -56,21 +43,6 @@ def Encoder_fc3_dropout(x,
                         is_training=True,
                         reuse=False,
                         name="3D_module"):
-    """
-    3D inference module. 3 MLP layers (last is the output)
-    With dropout  on first 2.
-    Input:
-    - x: N x [|img_feat|, |3D_param|]
-    - reuse: bool
-
-    Outputs:
-    - 3D params: N x num_output
-      if orthogonal: 
-           either 85: (3 + 24*3 + 10) or 109 (3 + 24*4 + 10) for factored axis-angle representation
-      if perspective:
-          86: (f, tx, ty, tz) + 24*3 + 10, or 110 for factored axis-angle.
-    - variables: tf variables
-    """
     #if reuse:
         #print('Reuse is on!')
     with tf.variable_scope(name, reuse=reuse) as scope:
@@ -92,9 +64,6 @@ def Encoder_fc3_dropout(x,
 
 
 def get_encoder_fn_separate(model_type):
-    """
-    Retrieves diff encoder fn for image and 3D
-    """
     encoder_fn = None
     threed_fn = None
     if 'resnet' in model_type:
@@ -119,21 +88,7 @@ def Discriminator_separable_rotations(
         shapes,
         weight_decay,
 ):
-    """
-    23 Discriminators on each joint + 1 for all joints + 1 for shape.
-    To share the params on rotations, this treats the 23 rotation matrices
-    as a "vertical image":
-    Do 1x1 conv, then send off to 23 independent classifiers.
 
-    Input:
-    - poses: N x 23 x 1 x 9, NHWC ALWAYS!!
-    - shapes: N x 10
-    - weight_decay: float
-
-    Outputs:
-    - prediction: N x (1+23) or N x (1+23+1) if do_joint is on.
-    - variables: tf variables
-    """
     data_format = "NHWC"
     with tf.name_scope("Discriminator_sep_rotations", [poses, shapes]):
         with tf.variable_scope("D") as scope:

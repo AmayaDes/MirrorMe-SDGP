@@ -1,9 +1,3 @@
-"""
-Sets default args
-
-Note all data format is NHWC because slim resnet wants NHWC.
-"""
-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function

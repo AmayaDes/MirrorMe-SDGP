@@ -1,7 +1,3 @@
-"""
-Data loader with data augmentation.
-Only used for training.
-"""
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -102,24 +98,6 @@ class DataLoader(object):
         return batch_dict
 
     def get_loader_w3d(self):
-        """
-        Similar to get_loader, but outputs are:
-          image_batch: batched images as per data_format
-          label_batch: batched keypoint labels N x K x 3
-          label3d_batch: batched keypoint labels N x (216 + 10 + 42)
-                         216=24*3*3 pose, 10 shape, 42=14*3 3D joints
-                         (3D datasets only have 14 joints annotated)
-          has_gt3d_batch: batched indicator for
-                          existence of [3D joints, 3D SMPL] labels N x 2 - bool
-                          Note 3D SMPL is only available for H3.6M.
-
-
-        Problem is that those datasets without pose/shape do not have them
-        in the tfrecords. There's no way to check for this in TF,
-        so, instead make 2 string_input_producers, one for data without 3d
-        and other for data with 3d.
-        And send [2 x *] to train.*batch
-        """
         datasets_no3d = [d for d in self.datasets if d not in _3D_DATASETS]
         datasets_yes3d = [d for d in self.datasets if d in _3D_DATASETS]
 
@@ -193,10 +171,6 @@ class DataLoader(object):
         return batch_dict
 
     def get_smpl_loader(self):
-        """
-        Loads dataset in form of queue, loads shape/pose of smpl.
-        returns a batch of pose & shape
-        """
 
         data_dirs = [
             join(self.dataset_dir, 'mocap_neutrMosh',
@@ -248,13 +222,8 @@ class DataLoader(object):
                 image, label, pose, gt3d = self.image_preprocessing(
                     image, image_size, label, center, pose=pose, gt3d=gt3d)
 
-                # Convert pose to rotation.
-                # Do not ignore the global!!
                 rotations = batch_rodrigues(tf.reshape(pose, [-1, 3]))
                 gt3d_flat = tf.reshape(gt3d, [-1])
-                # Label 3d is:
-                #   [rotations, shape-beta, 3Djoints]
-                #   [216=24*3*3, 10, 42=14*3]
                 label3d = tf.concat(
                     [tf.reshape(rotations, [-1]), shape, gt3d_flat], 0)
             else:

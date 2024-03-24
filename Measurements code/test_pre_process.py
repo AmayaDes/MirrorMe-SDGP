@@ -8,17 +8,6 @@ GOOD_MATCH_PERCENT = 0.15
 def alignImages(im1, im2,masksDL):
 
 
-	# Convert images to grayscale
-#	im1Gray = cv2.cvtColor(im1, cv2.COLOR_BGR2GRAY)
-#	im2Gray = cv2.cvtColor(im2, cv2.COLOR_BGR2GRAY)
-#	print("im1 type = ",type(im1))
-#	print("im2 type = ",type(im2))
-#	print("masksDL type = ",type(masksDL))
-#
-#	print("im1 shape = ",im1.shape)
-#	print("im2 shape = ",im2.shape)
-#	print("masksDL shape = ",masksDL.shape)
-
 	akaze = cv2.AKAZE_create()
 	keypoints1, descriptors1 = akaze.detectAndCompute(im1, None)
 	keypoints2, descriptors2 = akaze.detectAndCompute(im2, None)
@@ -112,11 +101,7 @@ for i in range(0,len(list_im)):
 	back = cv2.imread(list_im[i].replace('img','back'),cv2.IMREAD_COLOR)
 	mask = cv2.imread(list_im[i].replace('img','masksDL'))
 
-	#back_new = adjustExposure(image,back,mask[...,0])
 
 	back_align = alignImages(back, image,mask)
 
 	cv2.imwrite(list_im[i].replace('img','back'),back_align)
-#
-#str_msg='\nDone: ' + dir_name
-#print(str_msg)

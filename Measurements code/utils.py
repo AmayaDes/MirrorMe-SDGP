@@ -8,13 +8,6 @@ M_NUM = 11#19
 D_BASIS_NUM = 10
 V_BASIS_NUM = 10
 
-#M_STR = ["weight", "height", "neck", "chest",
-#  "belly button waist", "gluteal hip",
-#  "neck shoulder elbow wrist", "crotch knee floor",
-#  "across back shoulder neck", "neck to gluteal hip",
-#  "natural waist", "max. hip", "natural waist rise",
-#  "shoulder to midhand", "upper arm", "wrist",
-#  "outer natural waist to floor", "knee", "max. thigh"]
 
 
 M_STR = ["height", "waist","belly", "chest", "wrist","neck","arm length","thigh","shoulder width","hips", "ankle"]

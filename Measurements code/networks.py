@@ -110,7 +110,7 @@ class ResnetConditionHR(nn.Module):
 
 		return al_out, fg_out
 
-############################## part ##################################
+
 
 
 

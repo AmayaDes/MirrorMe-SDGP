@@ -48,15 +48,7 @@ class DeepLabModel(object):
 		self.sess = tf.Session(graph=self.graph)
 
 	def run(self, image):
-		"""Runs inference on a single image.
-
-		Args:
-		  image: A PIL.Image object, raw input image.
-
-		Returns:
-		  resized_image: RGB image resized from original input image.
-		  seg_map: Segmentation map of `resized_image`.
-		"""
+		
 		width, height = image.size
 		resize_ratio = 1.0 * self.INPUT_SIZE / max(width, height)
 		target_size = (int(resize_ratio * width), int(resize_ratio * height))
@@ -68,11 +60,6 @@ class DeepLabModel(object):
 		return resized_image, seg_map
 
 def create_pascal_label_colormap():
-	"""Creates a label colormap used in PASCAL VOC segmentation benchmark.
-
-	Returns:
-	A Colormap for visualizing segmentation results.
-	"""
 	colormap = np.zeros((256, 3), dtype=int)
 	ind = np.arange(256, dtype=int)
 
@@ -84,20 +71,6 @@ def create_pascal_label_colormap():
 	return colormap
 
 def label_to_color_image(label):
-	"""Adds color defined by the dataset colormap to the label.
-
-	Args:
-	label: A 2D array with integer type, storing the segmentation label.
-
-	Returns:
-	result: A 2D array with floating type. The element of the array
-	  is the color indexed by the corresponding element in the input label
-	  to the PASCAL color map.
-
-	Raises:
-	ValueError: If label is not of rank 2 or its value is larger than color
-	  map maximum entry.
-	"""
 	if label.ndim != 2:
 		raise ValueError('Expect 2-D input label')
 
@@ -160,12 +133,7 @@ if not os.path.exists(download_path):
   ('download completed! loading DeepLab model...')
 
 MODEL = DeepLabModel(download_path)
-#print('model loaded successfully!')
 
-#######################################################################################
-
-
-#list_im=glob.glob(dir_name + '/*_img.png'); list_im.sort()
 
 
 #for i in range(0,len(list_im)):
@@ -186,43 +154,8 @@ img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
 
 res = cv2.bitwise_and(img,img,mask = mask)
 bg_removed = res + (255 - cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)) 
-#cv2.imshow("original image",img)
-#cv2.imshow("mask",res)
-#cv2.imshow('input image',bg_removed)
-#cv2.waitKey(0)
 
-#print("after processing = ",type(np.asarray(255*mask_sel)))
-#
-#
-#print("back type = ",type(back))
-#print("image type = ",type(np.asarray(image)))
-#print("masksDL type = ",type(255*mask_sel.astype(np.uint8)))
-#
-#
-#print("back shape = ", back.shape)
-#print("image shape = ",np.asarray(image).shape)
-#print("masksDL shape = ",255*mask_sel.astype(np.uint8).shape)
-
-#back_align = alignImages(back, np.asarray(image), cv2.cvtColor(255*mask_sel.astype(np.uint8),cv2.COLOR_GRAY2RGB))
-
-#bg_removed = remove_bg(np.asarray(image), back_align,cv2.cvtColor(255*mask_sel.astype(np.uint8),cv2.COLOR_GRAY2RGB))
-
-#config = flags.FLAGS
-#config(sys.argv)
-
-# Using pre-trained model, change this to use your own.
-#config.load_path = src.config.PRETRAINED_MODEL
-#
-#config.batch_size = 1
-
-#cv2.imwrite(dir_name.replace('img','back'),remove_bg)
 main(bg_removed,args.height,args.sex,None)
-#name= dir_name.replace('img','masksDL')
-#cv2.imwrite(name,(255*mask_sel).astype(np.uint8))
-#cv2.imwrite(dir_name.replace('img','back'),back_align)
 
-
-#str_msg='\nDone: ' + dir_name
-#print(str_msg)
 
 
