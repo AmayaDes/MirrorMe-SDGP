@@ -102,8 +102,8 @@ def height_cal():
 
                         # Calculate stable height
                         stable_height = lowest_point - highest_point
-                        # real height
-                        height = (stable_height* d)/f
+                        # Calculating the real height
+                        height = ((stable_height* d)/f)
 
                         # Draw bounding box
                         cv2.rectangle(frame, (x1, y1), (x2, y2), COLORS, 2)

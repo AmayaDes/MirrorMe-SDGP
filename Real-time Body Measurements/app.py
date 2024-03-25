@@ -47,7 +47,12 @@ def run_python_script():
 def open_browser():
     webbrowser.open_new_tab('http://127.0.0.1:5000/')
 
+@app.route('/load_index2', methods=['POST'])
+def load_index2():
+    return render_template('measure.html')
+
 if __name__ == '__main__':
-    threading.Timer(1, open_browser).start()
+    # threading.Timer(1, open_browser).start()
     app.run(debug=True)
+
 
